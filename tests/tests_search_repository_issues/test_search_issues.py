@@ -5,15 +5,16 @@ from helpers.application_manager.application_manager import app
 
 class TestSearchIssues:
 
-    @allure.epic('Вкладка "Issues" на странице репозитория')
-    @allure.feature('просмотр вкладки "Issues" при поиске репозитория из неавторизованной зоны')
+    @allure.epic('Страница репозитория')
+    @allure.feature('Просмотр вкладки "Issues"')
     @allure.story('Неавторизованный пользовател может просмотреть вкладку "Issues"'
                   ' при поиске репозитория и открыть его для просмотра')
-    @allure.severity(allure.severity_level.CRITICAL)
-    @allure.issue('https://github.com/falinpavel/qa_guru_lesson_10/issues/1')
+    @allure.severity(allure.severity_level.NORMAL)
+    @allure.issue('https://jira.com/jira-123')
     @allure.testcase('https://github.com/falinpavel/qa_guru_lesson_10/issues/1')
     @allure.id(1)
     @allure.title('Проверка отображения наименования в вкладке "Issues"')
+    @allure.label('owner', 'falinpavel')
     @allure.description('Поиск "Issues" при поиске репозитория из неавторизованной зоны и проверка его наименования')
     @allure.tag('UI Tests')
     def test_search_issues(self):

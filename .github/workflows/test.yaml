@@ -4,41 +4,48 @@ on:
   push:
     branches:
       - "main"
+
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.x
-        uses: actions/setup-python@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: "3.x"
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Install dependencies
+          pip install pytest allure-pytest  # Убедись, что allure-pytest в requirements.txt
+
+      - name: Run tests with Allure
         run: |
           pytest --alluredir=allure-results
 
-      - name: Get Allure history
-        uses: actions/checkout@v2
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v3
         if: always()
-        continue-on-error: true
         with:
-          ref: gh-pages
-          path: gh-pages
-      - name: Allure Report action from marketplace
-        uses: simple-elf/allure-report-action@master
+          name: allure-results
+          path: allure-results
+
+      - name: Generate and publish Allure report
+        uses: simple-elf/allure-report-action@v1.7
         if: always()
         with:
           allure_results: allure-results
-          allure_history: allure-history
-          keep_reports: 20
-      - name: Deploy report to Github Pages
+          allure_report: allure-report
+          keep_reports: 5
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         if: always()
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          destination_dir: allure-report  # Опционально: можно указать подпапку
