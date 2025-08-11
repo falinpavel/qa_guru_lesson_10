@@ -1,6 +1,6 @@
 import allure
 
-from application.application_manager import app
+from helpers.application_manager.application_manager import app
 
 
 class TestSearchIssues:
