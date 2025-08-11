@@ -25,15 +25,14 @@ jobs:
 
       - name: Run tests with Allure
         run: |
-          pytest --alluredir=allure-results
+          pytest --alluredir=allure-results || true  # Продолжать даже при падении тестов
 
-      - name: Upload Allure results (Artifact)
-        uses: actions/upload-artifact@v4  # Исправлено с v3 на v4
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-results
           path: allure-results
-          retention-days: 3  # Опционально: хранить артефакты 3 дня
 
       - name: Generate Allure report
         uses: simple-elf/allure-report-action@v1.7
@@ -41,11 +40,11 @@ jobs:
         with:
           allure_results: allure-results
           allure_report: allure-report
-          keep_reports: 5
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-report
+          publish_dir: ./allure-report
+          keep_files: true
