@@ -21,20 +21,21 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install pytest allure-pytest  # Убедись, что allure-pytest в requirements.txt
+          pip install pytest allure-pytest
 
       - name: Run tests with Allure
         run: |
           pytest --alluredir=allure-results
 
-      - name: Upload Allure results
-        uses: actions/upload-artifact@v3
+      - name: Upload Allure results (Artifact)
+        uses: actions/upload-artifact@v4  # Исправлено с v3 на v4
         if: always()
         with:
           name: allure-results
           path: allure-results
+          retention-days: 3  # Опционально: хранить артефакты 3 дня
 
-      - name: Generate and publish Allure report
+      - name: Generate Allure report
         uses: simple-elf/allure-report-action@v1.7
         if: always()
         with:
@@ -48,4 +49,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: allure-report
-          destination_dir: allure-report  # Опционально: можно указать подпапку
