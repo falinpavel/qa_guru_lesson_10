@@ -16,10 +16,21 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Install system dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 libxrandr2 libgbm1 libasound2
+
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: latest
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest allure-pytest
 
@@ -33,6 +44,7 @@ jobs:
         with:
           name: allure-results
           path: allure-results
+          retention-days: 5
 
       - name: Generate Allure report
         uses: simple-elf/allure-report-action@v1.7
@@ -40,6 +52,7 @@ jobs:
         with:
           allure_results: allure-results
           allure_report: allure-report
+          keep_reports: 5  # Хранить последние 5 отчетов
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -48,3 +61,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
           keep_files: true
+          force_orphan: true  # Очистить историю перед деплоем
