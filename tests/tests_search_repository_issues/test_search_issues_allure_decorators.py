@@ -7,7 +7,7 @@ class TestSearchIssues:
 
     @allure.epic('Страница репозитория')
     @allure.feature('Просмотр вкладки "Issues"')
-    @allure.story('Неавторизованный пользовател может просмотреть вкладку "Issues"'
+    @allure.story('Неавторизованный пользователь может просмотреть вкладку "Issues"'
                   ' при поиске репозитория и открыть его для просмотра')
     @allure.severity(allure.severity_level.NORMAL)
     @allure.issue('https://jira.com/jira-123')

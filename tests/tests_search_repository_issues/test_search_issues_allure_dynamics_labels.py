@@ -5,7 +5,7 @@ from helpers.application_manager.application_manager import app
 
 class TestSearchIssues:
 
-    def test_search_issues_allure_decorators(self):
+    def test_search_issues_allure_dynamics_labels(self):
         allure.dynamic.epic('Страница репозитория')
         allure.dynamic.feature('Просмотр вкладки "Issues"')
         allure.dynamic.story('Неавторизованный пользовател может просмотреть вкладку "Issues"'
